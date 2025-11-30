@@ -4,8 +4,8 @@ namespace WebProgramlamaProje.Models
 {
     public class AppUser :IdentityUser
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
 
         public double? Weight { get; set; }
@@ -13,6 +13,6 @@ namespace WebProgramlamaProje.Models
         public string? Gender { get; set; }
 
         // Kullanıcının randevuları
-        public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; }
     }
 }
