@@ -1,0 +1,70 @@
+﻿@model WebProgramlamaProje.ViewModels.TrainerViewModel
+
+@{
+    ViewData["Title"] = "Antrenör Düzenle";
+}
+
+<div class="container mt-4">
+    <h2>Antrenör Düzenle</h2>
+    <hr />
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label"></label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Bio" class="form-label"></label>
+                    <textarea asp-for="Bio" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PhotoUrl" class="form-label"></label>
+                    <input asp-for="PhotoUrl" class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ShiftStart" class="form-label"></label>
+                        <input asp-for="ShiftStart" type="time" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ShiftEnd" class="form-label"></label>
+                        <input asp-for="ShiftEnd" type="time" class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">Hizmetler</div>
+                    <div class="card-body">
+                        @foreach (var service in Model.AllServices)
+                        {
+                            // Bu hizmet daha önce seçilmiş mi?
+                            bool isChecked = Model.SelectedServiceIds.Contains(service.Id);
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                       name="SelectedServiceIds"
+                                       value="@service.Id"
+                                       id="service_@service.Id"
+                                       @(isChecked ? "checked" : "")>
+                                <label class="form-check-label" for="service_@service.Id">
+                                    @service.Name
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </div>
+    </form>
+</div>
