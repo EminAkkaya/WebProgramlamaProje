@@ -1,0 +1,62 @@
+﻿@model IEnumerable<WebProgramlamaProje.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevularım";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Randevularım</h2>
+        <a asp-action="Create" class="btn btn-success">+ Yeni Randevu Al</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">Henüz bir randevu kaydınız bulunmamaktadır.</div>
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Tarih</th>
+                    <th>Saat</th>
+                    <th>Hizmet</th>
+                    <th>Antrenör</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.AppointmentDate.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            @item.StartTime.ToString(@"hh\:mm") - @item.EndTime.ToString(@"hh\:mm")
+                        </td>
+                        <td>@item.Service.Name</td>
+                        <td>@item.Trainer.FullName</td>
+                        <td>
+                            @if (item.Status == WebProgramlamaProje.Models.AppointmentStatus.Pending)
+                            {
+                                <span class="badge bg-warning text-dark">Onay Bekliyor</span>
+                            }
+                            else if (item.Status == WebProgramlamaProje.Models.AppointmentStatus.Confirmed)
+                            {
+                                <span class="badge bg-success">Onaylandı</span>
+                            }
+                            else if (item.Status == WebProgramlamaProje.Models.AppointmentStatus.Cancelled)
+                            {
+                                <span class="badge bg-danger">İptal Edildi</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Tamamlandı</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,66 @@
+﻿@model WebProgramlamaProje.ViewModels.AppointmentCreateViewModel
+
+@{
+    ViewData["Title"] = "Randevu Al";
+}
+
+<div class="container mt-4">
+    <h2>Randevu Al</h2>
+    <hr />
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+
+                <div class="mb-3">
+                    <label asp-for="AppointmentDate" class="form-label"></label>
+                    <input asp-for="AppointmentDate" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="StartTime" class="form-label"></label>
+                    <input asp-for="StartTime" type="time" class="form-control" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                    <small class="text-muted">Hizmet süresi otomatik olarak eklenecektir.</small>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ServiceId" class="form-label">Hizmet Seçiniz</label>
+                    <select asp-for="ServiceId" class="form-select"
+                            asp-items="@(new SelectList(Model.Services, "Id", "Name"))">
+                        <option value="">-- Hizmet Seç --</option>
+                    </select>
+                    <span asp-validation-for="ServiceId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="TrainerId" class="form-label">Antrenör Seçiniz</label>
+                    <select asp-for="TrainerId" class="form-select"
+                            asp-items="@(new SelectList(Model.Trainers, "Id", "FullName"))">
+                        <option value="">-- Antrenör Seç --</option>
+                    </select>
+                    <span asp-validation-for="TrainerId" class="text-danger"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Randevu Oluştur</button>
+                    <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <div class="alert alert-info">
+                <h5>Bilgilendirme</h5>
+                <ul>
+                    <li>Lütfen seçtiğiniz antrenörün çalışma saatlerine dikkat ediniz.</li>
+                    <li>Sistem seçtiğiniz hizmetin süresine göre bitiş saatini otomatik hesaplayacaktır.</li>
+                    <li>Randevunuz oluşturulduktan sonra "Onay Bekliyor" durumunda olacaktır.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

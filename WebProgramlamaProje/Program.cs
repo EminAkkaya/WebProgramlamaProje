@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebProgramlamaProje.Data;
 using WebProgramlamaProje.Models;
@@ -12,9 +12,32 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 2. Identity Ekleme
-builder.Services.AddIdentity<AppUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
+    // Şifre kurallarını geliştirme aşamasında esnetebilirsin
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 3;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Kullanıcı login değilse buraya atar
+    options.LoginPath = "/Account/Login";
+
+    // Yetkisi yetmiyorsa buraya atar
+    options.AccessDeniedPath = "/Account/AccessDenied";
+
+    // Cookie süresi (Örn: 60 dakika)
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+
+    // SlidingExpiration: Kullanıcı işlem yaptıkça süreyi uzatır
+    options.SlidingExpiration = true;
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -36,8 +59,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

@@ -45,6 +45,7 @@ namespace WebProgramlamaProje.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TrainerViewModel model)
         {
+            ModelState.Remove("AllServices");
             if (ModelState.IsValid)
             {
                 // 1. ViewModel'den Entity'e çevir
@@ -121,6 +122,7 @@ namespace WebProgramlamaProje.Controllers
         {
             if (id != model.Id) return NotFound();
 
+            ModelState.Remove("AllServices");
             if (ModelState.IsValid)
             {
                 try

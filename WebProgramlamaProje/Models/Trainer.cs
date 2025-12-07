@@ -10,7 +10,7 @@
         public TimeSpan ShiftEnd { get; set; }
 
         // Antrenörün verebildiği hizmetler
-        public ICollection<TrainerService> TrainerServices { get; set; }
-        public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<TrainerService>? TrainerServices { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; }
     }
 }
