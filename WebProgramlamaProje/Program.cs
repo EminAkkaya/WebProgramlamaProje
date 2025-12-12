@@ -38,7 +38,11 @@ builder.Services.ConfigureApplicationCookie(options =>
     // SlidingExpiration: Kullanıcı işlem yaptıkça süreyi uzatır
     options.SlidingExpiration = true;
 });
+// HttpClient servisini ekle
+builder.Services.AddHttpClient();
 
+// Gemini servisini sisteme tanıt
+builder.Services.AddScoped<WebProgramlamaProje.Services.IGeminiService, WebProgramlamaProje.Services.GeminiService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
