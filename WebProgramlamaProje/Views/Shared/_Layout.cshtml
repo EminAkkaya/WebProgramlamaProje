@@ -21,11 +21,12 @@
                 {
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Servisler</a>
-                            </li>
+                            
                             @if (User.IsInRole("Admin"))
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Servisler</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Trainers" asp-action="Index">Antrenörler</a>
                                 </li>
@@ -36,6 +37,13 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Ai" asp-action="Index">Ai Antrenör</a>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                                    <button type="submit" class="nav-link btn btn-link text-dark" style="border:none; background:none; cursor:pointer;">
+                                        Çıkış Yap
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>
