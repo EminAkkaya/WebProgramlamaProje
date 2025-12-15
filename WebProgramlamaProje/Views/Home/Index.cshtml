@@ -1,8 +1,96 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 100px 0;
+        border-radius: 15px;
+        margin-bottom: 40px;
+    }
+
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-3 fw-bold">GigaChad Gym'e Hoşgeldiniz</h1>
+        <p class="lead mb-4">Sınırlarını zorla, potansiyelini keşfet. En iyi versiyonuna ulaşmak için doğru yerdesin.</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a asp-controller="Appointments" asp-action="Create" class="btn btn-primary btn-lg px-4">Randevu Al</a>
+            <a asp-controller="Ai" asp-action="Index" class="btn btn-outline-light btn-lg px-4">
+                <i class="fa-solid fa-robot me-2"></i>AI Destekli Plan
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card feature-card h-100 shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-box mx-auto bg-success">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h4 class="card-title">Yapay Zeka Koçu</h4>
+                    <p class="card-text text-muted">Vücut ölçülerini gir, Gemini AI sana özel beslenme ve antrenman programını saniyeler içinde hazırlasın.</p>
+                    <a asp-controller="Ai" asp-action="Index" class="btn btn-link text-success text-decoration-none">Plan Oluştur &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card feature-card h-100 shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-box mx-auto bg-primary">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <h4 class="card-title">Uzman Kadro</h4>
+                    <p class="card-text text-muted">Alanında uzman antrenörlerimizle hedeflerine ulaş. Pilates, Fitness ve daha fazlası.</p>
+                    <a asp-controller="Trainers" asp-action="Index" class="btn btn-link text-primary text-decoration-none">Eğitmenleri Gör &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card feature-card h-100 shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <div class="icon-box mx-auto bg-warning text-dark">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <h4 class="card-title">Kolay Randevu</h4>
+                    <p class="card-text text-muted">Müsaitlik durumuna göre dilediğin hizmet için anında randevu oluştur ve takibini yap.</p>
+                    <a asp-controller="Appointments" asp-action="Index" class="btn btn-link text-warning text-decoration-none">Randevularım &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
