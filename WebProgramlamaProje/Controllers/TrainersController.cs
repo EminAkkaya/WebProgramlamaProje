@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebProgramlamaProje.Data;
 using WebProgramlamaProje.Models;
@@ -16,6 +17,7 @@ namespace WebProgramlamaProje.Controllers
         }
 
         // GET: Trainers
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             // Sadece silinmemiş (IsDeleted == false) antrenörleri getiriyoruz.
@@ -30,6 +32,7 @@ namespace WebProgramlamaProje.Controllers
         }
 
         // GET: Trainers/Create
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             // Form yüklenirken tüm hizmetleri çekip ViewModel'e koyuyoruz
@@ -43,6 +46,7 @@ namespace WebProgramlamaProje.Controllers
         // POST: Trainers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(TrainerViewModel model)
         {
             ModelState.Remove("AllServices");
@@ -86,6 +90,7 @@ namespace WebProgramlamaProje.Controllers
         }
 
         // GET: Trainers/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -116,6 +121,7 @@ namespace WebProgramlamaProje.Controllers
         }
 
         // POST: Trainers/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, TrainerViewModel model)
@@ -177,6 +183,7 @@ namespace WebProgramlamaProje.Controllers
         }
 
         // POST: Trainers/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -199,6 +206,10 @@ namespace WebProgramlamaProje.Controllers
         private bool TrainerExists(int id)
         {
             return _context.Trainers.Any(e => e.Id == id);
+        }
+        public IActionResult MeetTeam()
+        {
+            return View();
         }
     }
 }

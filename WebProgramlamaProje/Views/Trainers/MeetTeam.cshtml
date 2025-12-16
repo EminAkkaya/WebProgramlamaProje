@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Uzman Kadromuz";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">GigaChad Gym Eğitmenleri</h1>
+        <p class="lead text-muted">Hedeflerinize ulaşmanız için yanınızda olan profesyonel kadromuzla tanışın.</p>
+    </div>
+
+    <div id="loading" class="text-center my-5">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Yükleniyor...</span>
+        </div>
+        <p class="mt-2">Eğitmenler yükleniyor...</p>
+    </div>
+
+    <div id="error-message" class="alert alert-danger d-none text-center"></div>
+
+    <div class="row g-4" id="trainers-container">
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Sayfa tamamen yüklendiğinde çalışır
+        document.addEventListener("DOMContentLoaded", function () {
+            loadTrainers();
+        });
+
+        async function loadTrainers() {
+            const container = document.getElementById("trainers-container");
+            const loading = document.getElementById("loading");
+            const errorDiv = document.getElementById("error-message");
+
+            try {
+                // 1. API'ye İstek At (Fetch)
+                const response = await fetch('/api/TrainersApi');
+
+                if (!response.ok) {
+                    throw new Error("API'den veri alınamadı.");
+                }
+
+                // 2. Gelen JSON verisini oku
+                const trainers = await response.json();
+
+                // 3. Loading ikonunu gizle
+                loading.style.display = 'none';
+
+                // 4. Veriyi döngüye sok ve HTML oluştur
+                if (trainers.length === 0) {
+                    errorDiv.textContent = "Henüz kayıtlı eğitmen bulunmamaktadır.";
+                    errorDiv.classList.remove('d-none');
+                    return;
+                }
+
+                trainers.forEach(trainer => {
+                    // Uzmanlık alanlarını badge (etiket) haline getir
+                    let badgesHtml = '';
+                    trainer.specialties.forEach(spec => {
+                        badgesHtml += `<span class="badge bg-secondary me-1">${spec}</span>`;
+                    });
+
+                    // Kart HTML şablonu
+                    const cardHtml = `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 shadow border-0 hover-effect">
+                                <div class="card-img-top-wrapper" style="height: 300px; overflow: hidden;">
+                                    <img src="${trainer.photoUrl}" class="card-img-top w-100 h-100" style="object-fit: cover;" alt="${trainer.fullName}">
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title fw-bold text-primary">${trainer.fullName}</h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="fa fa-clock me-1"></i> ${trainer.workingHours}
+                                    </p>
+                                    <div class="mb-3">
+                                        ${badgesHtml}
+                                    </div>
+                                    <p class="card-text text-secondary fst-italic">"${trainer.bio}"</p>
+                                </div>
+                                <div class="card-footer bg-white border-0 text-center pb-4">
+                                    <a href="/Appointments/Create" class="btn btn-outline-primary rounded-pill px-4">Randevu Al</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // HTML'i konteynera ekle
+                    container.innerHTML += cardHtml;
+                });
+
+            } catch (error) {
+                console.error("Hata:", error);
+                loading.style.display = 'none';
+                errorDiv.textContent = "Eğitmen verileri yüklenirken bir sorun oluştu. Lütfen daha sonra tekrar deneyiniz.";
+                errorDiv.classList.remove('d-none');
+            }
+        }
+    </script>
+
+    <style>
+        .hover-effect {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .hover-effect:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+            }
+    </style>
+}
