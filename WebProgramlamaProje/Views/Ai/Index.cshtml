@@ -4,57 +4,123 @@
     ViewData["Title"] = "AI Antrenör";
 }
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Yapay Zeka Destekli Plan Oluşturucu</h2>
+<style>
+    .ai-header {
+        background: linear-gradient(135deg, #198754, #20c997);
+        color: white;
+        padding: 40px 0;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 20px rgba(25, 135, 84, 0.2);
+    }
+
+    .form-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        transition: transform 0.3s;
+    }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .btn-generate {
+        background: linear-gradient(45deg, #198754, #0f5132);
+        border: none;
+        padding: 12px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .btn-generate:hover {
+            box-shadow: 0 5px 15px rgba(25, 135, 84, 0.4);
+            transform: scale(1.02);
+        }
+
+    /* AI Cevap Alanı Stili */
+    .ai-result-content h3 {
+        color: #198754;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .ai-result-content ul {
+        padding-left: 20px;
+    }
+
+    .ai-result-content li {
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="container mt-4">
+
+    <div class="ai-header text-center">
+        <h1 class="fw-bold"><i class="fa-solid fa-robot fa-bounce"></i> Yapay Zeka Antrenör</h1>
+        <p class="lead mb-0">Vücut ölçülerini gir, sana özel antrenman ve beslenme programını saniyeler içinde oluşturalım.</p>
+    </div>
 
     <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    Bilgilerini Gir
+        <div class="col-lg-4 mb-4">
+            <div class="card form-card h-100">
+                <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+                    <h5 class="card-title text-success fw-bold">
+                        <i class="fa-solid fa-sliders me-2"></i>Fiziksel Özellikler
+                    </h5>
                 </div>
-                <div class="card-body">
-                    <form asp-action="Index" method="post">
-                        <div class="mb-3">
-                            <label class="form-label">Cinsiyet</label>
+                <div class="card-body px-4 pb-4">
+                    <form asp-action="Index" method="post" id="aiForm">
+
+                        <div class="form-floating mb-3">
                             <select asp-for="Gender" class="form-select">
                                 <option value="Erkek">Erkek</option>
                                 <option value="Kadın">Kadın</option>
                             </select>
+                            <label asp-for="Gender">Cinsiyet</label>
                         </div>
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <label asp-for="Age" class="form-label">Yaş</label>
-                                <input asp-for="Age" class="form-control" type="number" />
+
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Age" class="form-control" type="number" placeholder="Yaş" />
+                                    <label asp-for="Age">Yaş</label>
+                                </div>
                             </div>
-                            <div class="col-6 mb-3">
-                                <label asp-for="Weight" class="form-label">Kilo (kg)</label>
-                                <input asp-for="Weight" class="form-control" type="number" />
+                            <div class="col-6">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Weight" class="form-control" type="number" placeholder="Kilo" />
+                                    <label asp-for="Weight">Kilo (kg)</label>
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="Height" class="form-label">Boy (cm)</label>
-                            <input asp-for="Height" class="form-control" type="number" />
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Height" class="form-control" type="number" placeholder="Boy" />
+                            <label asp-for="Height">Boy (cm)</label>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Aktivite Seviyesi</label>
+
+                        <div class="form-floating mb-3">
                             <select asp-for="ActivityLevel" class="form-select">
                                 <option value="Hareketsiz">Hareketsiz (Masa başı)</option>
-                                <option value="Az Hareketli">Az Hareketli (Haftada 1-2 gün spor)</option>
-                                <option value="Sporcu">Aktif Sporcu</option>
+                                <option value="Az Hareketli">Az Hareketli (Haftada 1-2 gün)</option>
+                                <option value="Sporcu">Aktif Sporcu (Haftada 4+ gün)</option>
                             </select>
+                            <label asp-for="ActivityLevel">Aktivite Seviyesi</label>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Hedefin</label>
+
+                        <div class="form-floating mb-4">
                             <select asp-for="Goal" class="form-select">
-                                <option value="Kilo Vermek">Kilo Vermek</option>
-                                <option value="Kas Yapmak">Kas Yapmak / Hacim</option>
-                                <option value="Formu Korumak">Formu Korumak</option>
+                                <option value="Kilo Vermek">Kilo Vermek (Yağ Yakımı)</option>
+                                <option value="Kas Yapmak">Kas Yapmak (Hipertrofi)</option>
+                                <option value="Formu Korumak">Formu Korumak / Sıkılaşmak</option>
                             </select>
+                            <label asp-for="Goal">Hedefin</label>
                         </div>
+
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success">
-                                <i class="fa fa-magic"></i> Plan Oluştur
+                            <button type="submit" class="btn btn-success btn-generate text-white" id="btnSubmit">
+                                <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Plan Oluştur
                             </button>
                         </div>
                     </form>
@@ -62,25 +128,68 @@
             </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-lg-8">
+
+            <div id="loadingArea" class="text-center py-5 d-none">
+                <div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Yükleniyor...</span>
+                </div>
+                <h4 class="mt-3 text-muted">Yapay Zeka planını hazırlıyor...</h4>
+                <p class="text-muted small">Bu işlem 5-10 saniye sürebilir, lütfen bekleyiniz.</p>
+            </div>
+
             @if (!string.IsNullOrEmpty(Model.AiResponse))
             {
-                <div class="card border-success shadow">
-                    <div class="card-header bg-success text-white">
-                        Senin İçin Hazırlanan Plan
+                <div class="card form-card border-0 shadow-lg">
+                    <div class="card-header bg-success text-white py-3">
+                        <h5 class="mb-0"><i class="fa-solid fa-clipboard-check me-2"></i>Senin İçin Hazırlanan Plan</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-4 ai-result-content">
                         @Html.Raw(Model.AiResponse)
+                    </div>
+                    <div class="card-footer bg-white text-end">
+                        <button onclick="window.print()" class="btn btn-outline-secondary btn-sm">
+                            <i class="fa fa-print"></i> Yazdır / PDF Kaydet
+                        </button>
                     </div>
                 </div>
             }
             else
             {
-                <div class="alert alert-info mt-3 mt-md-0">
-                    Sol taraftaki formu doldurup "Plan Oluştur" butonuna bastığında,
-                    Google Gemini AI senin için özel bir beslenme ve egzersiz planı hazırlayacak.
+                <div id="infoArea" class="card form-card border-0 bg-light text-center py-5" style="border: 2px dashed #ccc !important;">
+                    <div class="card-body">
+                        <i class="fa-solid fa-dumbbell fa-4x text-muted mb-3 opacity-25"></i>
+                        <h4 class="text-muted">Henüz Bir Plan Oluşturulmadı</h4>
+                        <p class="text-secondary">
+                            Sol taraftaki formu doldurup <strong>"Plan Oluştur"</strong> butonuna bastığında,
+                            Google Gemini AI senin için tamamen kişiselleştirilmiş bir program hazırlayacak.
+                        </p>
+                    </div>
                 </div>
             }
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Form gönderildiğinde Loading animasyonunu tetikle
+        document.getElementById("aiForm").addEventListener("submit", function() {
+            // Butonu kilitle ve yazısını değiştir
+            var btn = document.getElementById("btnSubmit");
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Hazırlanıyor...';
+
+            // Sağ taraftaki Info veya Sonuç alanını gizle
+            var infoArea = document.getElementById("infoArea");
+            if(infoArea) infoArea.classList.add("d-none");
+
+            // Eğer daha önce sonuç varsa onu da gizle (veya loading ile değiştir)
+            var existingResult = document.querySelector(".card.border-0.shadow-lg");
+            if(existingResult) existingResult.style.display = 'none';
+
+            // Loading alanını göster
+            document.getElementById("loadingArea").classList.remove("d-none");
+        });
+    </script>
+}

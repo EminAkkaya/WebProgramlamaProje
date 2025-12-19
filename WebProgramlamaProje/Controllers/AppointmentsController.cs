@@ -140,6 +140,59 @@ namespace WebProgramlamaProje.Controllers
             return ReloadView(model);
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> PendingRequests()
+        {
+            // Sadece statüsü 'Pending' olanları getir
+            var pendingAppointments = await _context.Appointments
+                .Include(a => a.Member)   // Randevuyu alan üye (AppUser)
+                .Include(a => a.Trainer)  // Antrenör
+                .Include(a => a.Service)  // Hizmet
+                .Where(a => a.Status == AppointmentStatus.Pending)
+                .OrderBy(a => a.AppointmentDate)
+                .ThenBy(a => a.StartTime)
+                .ToListAsync();
+
+            return View(pendingAppointments);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null) return NotFound();
+
+            // Durumu güncelle
+            appointment.Status = AppointmentStatus.Confirmed;
+            _context.Update(appointment);
+            await _context.SaveChangesAsync();
+
+            // Kullanıcıya mesaj göster (Layout'ta TempData kontrolü varsa görünür)
+            TempData["SuccessMessage"] = "Randevu başarıyla onaylandı.";
+
+            return RedirectToAction(nameof(PendingRequests));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Reject(int id)
+        {
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null) return NotFound();
+
+            // Durumu güncelle
+            appointment.Status = AppointmentStatus.Cancelled;
+            _context.Update(appointment);
+            await _context.SaveChangesAsync();
+
+            TempData["ErrorMessage"] = "Randevu reddedildi/iptal edildi.";
+
+            return RedirectToAction(nameof(PendingRequests));
+        }
+
         private IActionResult ReloadView(AppointmentCreateViewModel model)
         {
             model.Services = _context.Services.Where(s => !s.IsDeleted).ToList();

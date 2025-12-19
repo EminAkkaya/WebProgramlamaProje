@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Yönetim Paneli";
-    Layout = "_Layout"; // Admin için ayrı layout varsa onu kullan
+    Layout = "_Layout";
 }
 
 <div class="container-fluid mt-4">
@@ -9,75 +9,9 @@
             <h1 class="h3 mb-0 text-gray-800">Admin Dashboard</h1>
             <p class="text-muted">GigaChad Gym Yönetim Paneline Hoşgeldiniz</p>
         </div>
-        <a href="/" class="btn btn-sm btn-outline-secondary">
+        <a href="/Home/Admin" class="btn btn-sm btn-outline-secondary">
             <i class="fa-solid fa-home"></i> Siteye Git
         </a>
-    </div>
-
-    <div class="row g-4 mb-4">
-        <div class="col-xl-3 col-md-6">
-            <div class="card border-left-primary shadow h-100 py-2 border-0 border-start border-4 border-primary">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Toplam Üye</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">150+</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300 text-primary opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6">
-            <div class="card border-left-success shadow h-100 py-2 border-0 border-start border-4 border-success">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Eğitmenler</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-dumbbell fa-2x text-gray-300 text-success opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6">
-            <div class="card border-left-info shadow h-100 py-2 border-0 border-start border-4 border-info">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Aktif Randevular</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">24</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300 text-info opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-3 col-md-6">
-            <div class="card border-left-warning shadow h-100 py-2 border-0 border-start border-4 border-warning">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Hizmetler</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">8</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-tags fa-2x text-gray-300 text-warning opacity-50"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="row">
@@ -106,6 +40,11 @@
                         <div class="col-md-3 mb-3">
                             <a asp-controller="Trainers" asp-action="Index" class="btn btn-outline-secondary w-100 p-4">
                                 <i class="fa fa-users fa-2x mb-2"></i><br>Eğitmenleri Yönet
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a asp-controller="Appointments" asp-action="PendingRequests" class="btn btn-outline-warning w-100 p-4">
+                                <i class="fa fa-bell fa-2x mb-2"></i><br>Randevu Talepleri
                             </a>
                         </div>
                     </div>

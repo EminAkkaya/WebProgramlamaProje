@@ -1,35 +1,134 @@
 ﻿@model WebProgramlamaProje.Models.LoginViewModel
-<h2>Login Page</h2>
 
-<div asp-validation-summary="All" class="text-danger"></div>
+@{
+    ViewData["Title"] = "Giriş Yap";
+    Layout = null; // Bu sayfa genellikle Layout'tan bağımsız tam ekran görünür. İstersen bu satırı kaldırabilirsin.
+}
 
-<form asp-action="Login" method="post">
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-       <div class="form-check">
-            <input asp-for="RememberMe" class="form-check-input" type="checkbox" /> 
-            <label asp-for="RememberMe" class="form-check-label"></label>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GigaChad Gym</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1470&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6); /* Arka planı karartma */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.9); /* Hafif transparan beyaz */
+            backdrop-filter: blur(10px); /* Buzlu cam efekti */
+            border-radius: 15px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .brand-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0d6efd; /* Bootstrap Primary Color */
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-floating > label {
+            color: #6c757d;
+        }
+
+        .btn-login {
+            background: linear-gradient(45deg, #0d6efd, #0043a8);
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+        }
+
+        @@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay">
+        <div class="login-card text-center">
+            <div class="brand-logo">
+                <i class="fa-solid fa-dumbbell"></i> GigaChad Gym
+            </div>
+
+            <h4 class="mb-4 text-secondary">Hoşgeldiniz</h4>
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger text-start" role="alert"></div>
+
+            <form asp-action="Login" method="post">
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="Email"><i class="fa fa-envelope me-2"></i>Email Adresi</label>
+                    <span asp-validation-for="Email" class="text-danger small text-start d-block mt-1"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Şifre" />
+                    <label asp-for="Password"><i class="fa fa-lock me-2"></i>Şifre</label>
+                    <span asp-validation-for="Password" class="text-danger small text-start d-block mt-1"></span>
+                </div>
+
+                <div class="form-check text-start mb-4">
+                    <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="flexCheckDefault" />
+                    <label asp-for="RememberMe" class="form-check-label text-muted" for="flexCheckDefault">
+                        Beni Hatırla
+                    </label>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-login text-white rounded-pill">
+                        Giriş Yap
+                    </button>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="mt-3">
+                    <p class="text-muted mb-2">Henüz hesabınız yok mu?</p>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-dark btn-sm px-4 rounded-pill">
+                        Hemen Kayıt Ol
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
 
-<hr />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-<div class="mt-3">
-    <p>Hesabınız yok mu?</p>
-    <a asp-controller="Account" asp-action="Register" class="btn btn-secondary">Hesap Oluştur</a>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    @* Layout null olduğu için scriptleri buraya manuel dahil etmemiz gerekebilir *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
